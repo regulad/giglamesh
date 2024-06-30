@@ -67,12 +67,6 @@ RUN chown -R $USERNAME:$USERNAME /home/$USERNAME
 # dockerfile_lint - ignore
 USER $USERNAME
 
-# Set the environment variables
-RUN touch /home/$USERNAME/.bashrc \
-    && echo 'export PATH="/usr/local/bin:${PATH}"' > /home/$USERNAME/.bashrc \
-    && echo 'export PKG_CONFIG_PATH="/usr/local/lib/$(arch)-linux-gnu/pkgconfig:${PKG_CONFIG_PATH}"' >> /home/$USERNAME/.bashrc \
-    && echo 'export LD_LIBRARY_PATH="/usr/local/lib/$(arch)-linux-gnu/:${LD_LIBRARY_PATH}"' >> /home/$USERNAME/.bashrc
-
 # Set the working directory to the user's home directory
 WORKDIR /home/$USERNAME
 
@@ -82,6 +76,7 @@ RUN mkdir -p /home/$USERNAME/.config/wayvnc
 COPY --chown=$USERNAME:$USERNAME entrypoint.sh /home/$USERNAME/entrypoint.sh
 RUN chmod +x /home/$USERNAME/entrypoint.sh
 COPY --chown=$USERNAME:$USERNAME wayvnc/config_template /home/$USERNAME/.config/wayvnc/config_template
+# TODO: do these copies into a read only area, do the other stuff in temp
 
 # Run the entrypoint script
 ENTRYPOINT ["/home/giglamesh/entrypoint.sh"]

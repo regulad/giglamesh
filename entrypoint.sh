@@ -1,6 +1,13 @@
 #!/bin/bash
+# i don't think the shebang is respected in the docker container
 
-# on PATH in docker: scrcpy, adb, cage, wayvnc
+# Set the environment variables
+export PATH="/usr/local/bin:${PATH}"
+# shellcheck disable=SC2155  # arch will not fail
+export PKG_CONFIG_PATH="/usr/local/lib/$(arch)-linux-gnu/pkgconfig:${PKG_CONFIG_PATH}"
+# shellcheck disable=SC2155  # arch will not fail
+export LD_LIBRARY_PATH="/usr/local/lib/$(arch)-linux-gnu/:${LD_LIBRARY_PATH}"
+# on PATH in docker now: scrcpy, adb, cage, wayvnc
 
 # https://github.com/Genymobile/scrcpy
 # https://github.com/cage-kiosk/cage
