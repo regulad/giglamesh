@@ -5,6 +5,7 @@
 
 import subprocess
 import re
+import os
 
 
 if __name__ == "__main__":
@@ -20,7 +21,8 @@ if __name__ == "__main__":
             "XDG_RUNTIME_DIR": "/tmp",
             # "WAYLAND_DISPLAY": "wayland-0",
             "SDL_VIDEODRIVER": "wayland",
-        },
+        }
+        | os.environ,
     )
 
     #  $ cage
@@ -59,7 +61,8 @@ if __name__ == "__main__":
         shell=True,
         env={
             "WAYLAND_DISPLAY": wayland_display,
-        },
+        }
+        | os.environ,
     )
 
     #  $ wayvnc --help
