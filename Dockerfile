@@ -48,8 +48,7 @@ RUN git clone https://github.com/Genymobile/scrcpy \
 # build & install wayland (dependency for wlroots, needs a new version) (1d5772b7b9d0bbfbc27557721f62a9f805b66929 at authoring)
 RUN git clone https://gitlab.freedesktop.org/wayland/wayland.git \
     && cd wayland/ \
-    && meson setup build/ \
-    && ninja -C build/ \
+    && meson build/ \
     && ninja -C build/ install \
     && cd .. \
     && rm -rf wayland
