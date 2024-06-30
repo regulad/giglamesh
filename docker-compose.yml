@@ -11,3 +11,5 @@ services:
     environment:
       DEVICE_IP: ${DEVICE_IP:-127.0.0.1}
       DEVICE_ADB_PORT: ${DEVICE_ADB_PORT:-5555}
+      VNC_USERNAME: ${VNC_USERNAME:-user}
+      VNC_PASSWORD: ${VNC_PASSWORD:-password}

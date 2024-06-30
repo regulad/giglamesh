@@ -28,22 +28,13 @@ RUN apt-get update \
                       libpam0g-dev libgnutls28-dev libavfilter-dev libavcodec-dev \
                       libavutil-dev libturbojpeg0-dev scdoc \
                       \
-                      adb android-sdk-platform-tools-common fastboot cmake \
+                      adb android-sdk-platform-tools-common fastboot cmake coreutils \
     && apt-get clean
 
 # we are going to do this all in one layer (each) to prevent the cache from balloning
 # we would ./install_release.sh but we need to build the server first since we might be on arm64 and not the assumed x86_64
 
 WORKDIR /deps
-
-# will load everything into /usr/local/bin/scrcpy (a8871bfad77ed1d0b968f3919df685a301849f8f at authoring)
-RUN git clone https://github.com/Genymobile/scrcpy \
-    && cd scrcpy/ \
-    && meson setup "build-server/" --buildtype=release --strip -Db_lto=true -Dcompile_app=false -Dcompile_server=true \
-    && meson setup "build-client/" --buildtype=release --strip -Db_lto=true -Dcompile_app=true -Dcompile_server=false -Dprebuilt_server=/scrcpy/build-server/scrcpy-server \
-    && ninja -C build-client/ install \
-    && cd .. \
-    && rm -rf scrcpy
 
 # build & install wayland (dependency for wlroots, needs a new version) (1d5772b7b9d0bbfbc27557721f62a9f805b66929 at authoring)
 RUN git clone https://gitlab.freedesktop.org/wayland/wayland.git \
@@ -53,7 +44,7 @@ RUN git clone https://gitlab.freedesktop.org/wayland/wayland.git \
     && cd .. \
     && rm -rf wayland
 
-# build & install libdrm (b065dbc5cc91bab36856c7f7d6610ddf0a3bfd75 at authoring)
+# build & install libdrm (dep for wlroots, needs a new version) (b065dbc5cc91bab36856c7f7d6610ddf0a3bfd75 at authoring)
 RUN git clone https://gitlab.freedesktop.org/mesa/drm.git \
     && cd drm/ \
     && meson build/ \
@@ -100,6 +91,22 @@ RUN git clone https://github.com/any1/wayvnc.git \
     && cd .. \
     && rm -rf wayvnc neatvnc aml
 
+# will load everything into /usr/local/bin/scrcpy (a8871bfad77ed1d0b968f3919df685a301849f8f at authoring)
+RUN git clone https://github.com/Genymobile/scrcpy \
+    && cd scrcpy/ \
+    && meson setup "build-server/" --buildtype=release --strip -Db_lto=true -Dcompile_app=false -Dcompile_server=true \
+    && meson setup "build-client/" --buildtype=release --strip -Db_lto=true -Dcompile_app=true -Dcompile_server=false -Dprebuilt_server=/scrcpy/build-server/scrcpy-server \
+    && ninja -C build-client/ install \
+    && cd .. \
+    && rm -rf scrcpy
+
+# add go to path for envsubst
+RUN rm -rf /usr/local/go && tar -C /usr/local -xzf go1.22.4.linux-$(arch).tar.gz
+ENV PATH=$PATH:/usr/local/go/bin
+RUN go install github.com/a8m/envsubst/cmd/envsubst@latest # v1.4.2 at authoring
+
+# finally, we are done with the deps
+
 WORKDIR /
 
 ARG USERNAME=giglamesh
@@ -122,6 +129,7 @@ WORKDIR /home/$USERNAME
 
 # Copy the current directory contents into the container at /app
 COPY entrypoint.sh /home/$USERNAME/entrypoint.sh
+COPY wayvnc/config_template /home/$USERNAME/.config/wayvnc/config_template
 
 # Make the entrypoint script executable
 RUN chmod +x /home/$USERNAME/entrypoint.sh
