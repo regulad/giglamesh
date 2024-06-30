@@ -28,9 +28,9 @@ RUN echo "deb http://deb.debian.org/debian bookworm-backports main contrib non-f
                       libseat-dev libseat1 udev libudev-dev libudev1 libxcb-icccm4 libxcb-icccm4-dev \
                       libxcb-render-util0 libxcb-render-util0-dev libxcb-res0 libxcb-res0-dev libxcb-xfixes0 libxcb-xfixes0-dev \
                       \
-                      libxkbcommon-dev \
+                      libxkbcommon-dev libwlroots-dev libxkbcommon-dev \
                       \
-                      meson libxkbcommon-dev libjansson-dev \
+                      meson libdrm-dev libxkbcommon-dev libwlroots-dev libjansson-dev \
                       libpam0g-dev libgnutls28-dev libavfilter-dev libavcodec-dev \
                       libavutil-dev libturbojpeg0-dev scdoc \
                       \
