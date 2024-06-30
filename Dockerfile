@@ -42,86 +42,9 @@ RUN echo "deb http://deb.debian.org/debian bookworm-backports main contrib non-f
 
 WORKDIR /deps
 
-# build & install wayland (dependency for wlroots, needs a new version)
-RUN git clone https://gitlab.freedesktop.org/wayland/wayland.git \
-    && cd wayland/ \
-    && git checkout 1d5772b7b9d0bbfbc27557721f62a9f805b66929 \
-    && meson build/ \
-    && ninja -C build/ install \
-    && cd .. #\
-#    && rm -rf wayland
-
-# build & install libdrm (dep for wlroots, needs a new version)
-RUN git clone https://gitlab.freedesktop.org/mesa/drm.git \
-    && cd drm/ \
-    && git checkout b065dbc5cc91bab36856c7f7d6610ddf0a3bfd75 \
-    && meson build/ \
-    && ninja -C build/ install \
-    && cd .. #\
-#    && rm -rf drm
-
-# build & install wayland-protocol (dep for wlroots, needs a new version)
-RUN git clone https://gitlab.freedesktop.org/wayland/wayland-protocols.git \
-    && cd wayland-protocols/ \
-    && git checkout 7d5a3a8b494ae44cd9651f9505e88a250082765e \
-    && meson build/ \
-    && ninja -C build/ install \
-    && cd .. #\
-#    && rm -rf wayland-protocols
-
-# build & install wlroots (dependency for cage) (pinned to v0.17.0)
-RUN git clone https://gitlab.freedesktop.org/wlroots/wlroots.git \
-    && cd wlroots/ \
-    && git checkout a2d2c38a3127745629293066beeed0a649dff8de \
-    && meson setup build/ -Dxwayland=enabled \
-    && ninja -C build/ \
-    && ninja -C build/ install \
-    && cd .. #\
-#    && rm -rf wlroots
-
-# runs in a run stage (makes a layer) because I need to do uname -m to get the architecture. \
-# hopefully the extra colon doens't hurt
-RUN export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/$(uname -m)-linux-gnu/pkgconfig
-
-# now build cage (our kiosk compositor)
-RUN git clone https://github.com/cage-kiosk/cage.git \
-    && cd cage/ \
-    && git checkout e7d8780f46277af87881e0be91cb2092541bb1d5 \
-    && meson build \
-    && ninja -C build \
-    && ninja -C build install \
-    && cd .. #\
-#    && rm -rf cage
-
-# now build wayvnc (our vnc server) (2d62e1203e5589cf754e9b7031ddc609124cf156 at authoring)
-# https://github.com/any1/wayvnc#configure-and-build
-RUN git clone https://github.com/any1/wayvnc.git \
-    && git clone https://github.com/any1/neatvnc.git \
-    && git clone https://github.com/any1/aml.git \
-    && mkdir wayvnc/subprojects \
-    && cd wayvnc/subprojects \
-    && ln -s ../../neatvnc . \
-    && ln -s ../../aml . \
-    && cd ../.. \
-    && mkdir neatvnc/subprojects \
-    && cd neatvnc/subprojects \
-    && ln -s ../../aml . \
-    && cd ../.. \
-    && cd wayvnc/ \
-    && meson build \
-    && ninja -C build \
-    && ninja -C build install \
-    && cd .. #\
-#    && rm -rf wayvnc neatvnc aml
-
-# will load everything into /usr/local/bin/scrcpy (a8871bfad77ed1d0b968f3919df685a301849f8f at authoring)
-RUN git clone https://github.com/Genymobile/scrcpy \
-    && cd scrcpy/ \
-    && meson setup "build-server/" --buildtype=release --strip -Db_lto=true -Dcompile_app=false -Dcompile_server=true \
-    && meson setup "build-client/" --buildtype=release --strip -Db_lto=true -Dcompile_app=true -Dcompile_server=false -Dprebuilt_server=/scrcpy/build-server/scrcpy-server \
-    && ninja -C build-client/ install \
-    && cd .. #\
-#    && rm -rf scrcpy
+COPY install-dependencies.sh /deps/install-dependencies.sh
+RUN chmod +x /deps/install-dependencies.sh
+RUN /deps/install-dependencies.sh
 
 # finally, we are done with the deps
 
