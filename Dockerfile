@@ -70,7 +70,7 @@ RUN git clone https://gitlab.freedesktop.org/wayland/wayland-protocols.git \
 RUN git clone https://gitlab.freedesktop.org/wlroots/wlroots.git \
     && cd wlroots/ \
     && git checkout a2d2c38a3127745629293066beeed0a649dff8de \
-    && meson setup build/ -Dxwayland=true \
+    && meson setup build/ -Dxwayland=enabled \
     && ninja -C build/ \
     && ninja -C build/ install \
     && cd .. \
