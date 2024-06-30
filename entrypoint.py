@@ -39,7 +39,7 @@ if __name__ == "__main__":
     for line in cage.stdout:
         line_string = line.decode("utf-8")
         print(line_string)  # newlines are already stripped
-        # we are looking for the pattern is running on Wayland display %s, where %s is the WAYLAND_SERVER
+        # we are looking for the pattern "is running on Wayland display %s", where %s is the WAYLAND_SERVER
         # use regex
         match = re.match(r".*running on Wayland display (.*)", line_string)
         if match:
