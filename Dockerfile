@@ -75,6 +75,8 @@ RUN mkdir -p /home/$USERNAME/.config/wayvnc
 # Copy the current directory contents into the container at /app
 COPY --chown=$USERNAME:$USERNAME entrypoint.sh /home/$USERNAME/entrypoint.sh
 RUN chmod +x /home/$USERNAME/entrypoint.sh
+COPY --chown=$USERNAME:$USERNAME entrypoint.py /home/$USERNAME/entrypoint.py
+RUN chmod +x /home/$USERNAME/entrypoint.py
 COPY --chown=$USERNAME:$USERNAME wayvnc/config_template /home/$USERNAME/.config/wayvnc/config_template
 # TODO: do these copies into a read only area, do the other stuff in temp
 
