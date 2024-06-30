@@ -20,11 +20,11 @@ RUN apt-get update \
                       expat libexpat1 libexpat1-dev libxml++2.6-2v5 libxml++2.6-dev \
                       doxygen graphviz xmlto xsltproc \
                       \
-                      meson libwayland-dev wayland-protocols libdrm-dev libxkbcommon-dev libpixman-1-dev \
+                      meson libxkbcommon-dev libpixman-1-dev \
                       \
-                      libwayland-dev libxkbcommon-dev \
+                      libxkbcommon-dev \
                       \
-                      meson libdrm-dev libxkbcommon-dev libwlroots-dev libjansson-dev \
+                      meson libxkbcommon-dev libjansson-dev \
                       libpam0g-dev libgnutls28-dev libavfilter-dev libavcodec-dev \
                       libavutil-dev libturbojpeg0-dev scdoc \
                       \
