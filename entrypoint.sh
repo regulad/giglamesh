@@ -25,8 +25,7 @@ rm -f ~/.config/wayvnc/config || exit 1
 envsubst < ~/.config/wayvnc/config_template > ~/.config/wayvnc/config || exit 1
 
 echo "Connecting to ADB device..."
-sleep 10 # give adb device time to start on another container
-adb connect "$DEVICE_IP":"$DEVICE_ADB_PORT" | grep "connected" > /dev/null || exit 1
+adb connect "$DEVICE_IP":"$DEVICE_ADB_PORT" | grep "connected"Wh || exit 1
 
 # running
 
@@ -36,7 +35,6 @@ function open_scrcpy() {
 }
 
 function open_wayvnc() {
-  sleep 10 # give cage time to start scrcpy
   echo "Starting wayvnc... (container will be ready soon)"
   wayvnc 0.0.0.0 || exit 1
 }

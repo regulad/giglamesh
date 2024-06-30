@@ -49,6 +49,10 @@ COPY install-dependencies.sh /deps/install-dependencies.sh
 RUN chmod +x /deps/install-dependencies.sh
 RUN /deps/install-dependencies.sh
 
+ENV PATH="/usr/local/bin:${PATH}"
+RUN export PKG_CONFIG_PATH="/usr/local/lib/$(arch)-linux-gnu/pkgconfig:${PKG_CONFIG_PATH}"
+RUN export LD_LIBRARY_PATH="/usr/local/lib/$(arch)-linux-gnu/:${LD_LIBRARY_PATH}"
+
 # finally, we are done with the deps
 
 WORKDIR /
