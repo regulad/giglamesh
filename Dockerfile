@@ -131,11 +131,8 @@ ARG USERNAME=giglamesh
 ARG USER_UID=1008
 ARG USER_GID=$USER_UID
 
-RUN addgroup -g $USER_GID -S $USERNAME \
-    && adduser -u $USER_UID -G $USERNAME -D -S $USERNAME
-
-RUN mkdir -p /home/$USERNAME \
-    && chown -R $USERNAME:$USERNAME /home/$USERNAME
+RUN groupadd -g $USER_GID $USERNAME \
+    && useradd -u $USER_UID -g $USERNAME -m -s /bin/bash $USERNAME
 
 # Switch to non-root user (for security)
 # This makes dockerfile_lint complain, but it's fine
