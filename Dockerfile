@@ -22,8 +22,11 @@ RUN echo "deb http://deb.debian.org/debian bookworm-backports main contrib non-f
                       doxygen graphviz xmlto xsltproc \
                       \
                       meson libxkbcommon-dev libpixman-1-dev \
-                      xwayland libxcb1 libxcb1-dev libxcb-render-util0 libxcb-render-util0-dev libxcb-ewmh-dev libxcb-errors-dev/bookworm-backports libxcb-errors0/bookworm-backports \
-                      libseat-dev libseat1 udev libudev-dev libudev1 \
+                      xwayland libxcb1 libxcb1-dev libxcb-render-util0 libxcb-render-util0-dev libxcb-ewmh-dev libxcb-ewmh2 \
+                      libxcb-errors-dev/bookworm-backports libxcb-errors0/bookworm-backports  \
+                      libxcb-composite0-dev libxcb-composite0  \
+                      libseat-dev libseat1 udev libudev-dev libudev1 libxcb-icccm4 libxcb-icccm4-dev \
+                      libxcb-render-util0 libxcb-render-util0-dev libxcb-res0 libxcb-res0-dev libxcb-xfixes0 libxcb-xfixes0-dev \
                       \
                       libxkbcommon-dev \
                       \
