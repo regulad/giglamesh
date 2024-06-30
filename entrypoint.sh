@@ -110,5 +110,8 @@ function open_wayvnc() {
   wayvnc 0.0.0.0 || exit 1
 }
 
+export XDG_RUNTIME_DIR=/tmp
+export WAYLAND_DISPLAY=giglamesh
+
 open_scrcpy &
 open_wayvnc
