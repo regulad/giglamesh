@@ -134,6 +134,8 @@ ARG USER_GID=$USER_UID
 RUN groupadd -g $USER_GID $USERNAME \
     && useradd -u $USER_UID -g $USERNAME -m -s /bin/bash $USERNAME
 
+RUN chown -R $USERNAME:$USERNAME /home/$USERNAME
+
 # Switch to non-root user (for security)
 # This makes dockerfile_lint complain, but it's fine
 # dockerfile_lint - ignore
@@ -142,9 +144,12 @@ USER $USERNAME
 # Set the working directory to the user's home directory
 WORKDIR /home/$USERNAME
 
+RUN mkdir -p /home/$USERNAME/.config/wayvnc
+
 # Copy the current directory contents into the container at /app
-COPY entrypoint.sh /home/$USERNAME/entrypoint.sh
-COPY wayvnc/config_template /home/$USERNAME/.config/wayvnc/config_template
+COPY --chown=$USERNAME:$USERNAME entrypoint.sh /home/$USERNAME/entrypoint.sh
+RUN chmod +x /home/$USERNAME/entrypoint.sh
+COPY --chown=$USERNAME:$USERNAME wayvnc/config_template /home/$USERNAME/.config/wayvnc/config_template
 
 # Run the entrypoint script
-CMD ["/bin/bash", "/home/giglamesh/entrypoint.sh"]
+ENTRYPOINT ["/home/giglamesh/entrypoint.sh"]

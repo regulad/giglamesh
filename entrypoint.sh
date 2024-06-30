@@ -10,17 +10,17 @@
 # https://github.com/regulad/stingray/blob/master/stingray.py
 
 # just rotate the key every time, it's not like it's a big deal
-cd ~/.config/wayvnc || exit
+cd ~/.config/wayvnc || exit 1
 rm -f tls_key.pem tls_cert.pem
 openssl req -x509 -newkey ec -pkeyopt ec_paramgen_curve:secp384r1 -sha384 \
 	-days 3650 -nodes -keyout tls_key.pem -out tls_cert.pem \
 	-subj /CN=localhost \
-	-addext subjectAltName=DNS:localhost,DNS:localhost,IP:127.0.0.1
-cd ~ || exit
+	-addext subjectAltName=DNS:localhost,DNS:localhost,IP:127.0.0.1 || exit 1
+cd ~ || exit 1
 
 # envsubst
-rm -f ~/.config/wayvnc/config
-envsubst < ~/.config/wayvnc/config_template > ~/.config/wayvnc/config
+rm -f ~/.config/wayvnc/config || exit 1
+envsubst < ~/.config/wayvnc/config_template > ~/.config/wayvnc/config || exit 1
 
 function wait_for_device() {
     while true; do
@@ -29,19 +29,19 @@ function wait_for_device() {
     done
 }
 
-adb connect "$DEVICE_IP":"$DEVICE_ADB_PORT" || exit
+adb connect "$DEVICE_IP":"$DEVICE_ADB_PORT" || exit 1
 wait_for_device
 
 # running
 
 function open_scrcpy() {
   export SDL_VIDEODRIVER=wayland  # satisfies scrcpy and tells it to use wayland
-  cage scrcpy || exit
+  cage scrcpy || exit 1
 }
 
 function open_wayvnc() {
   sleep 10 # give cage time to start scrcpy
-  wayvnc 0.0.0.0
+  wayvnc 0.0.0.0 || exit 1
 }
 
 open_scrcpy &
