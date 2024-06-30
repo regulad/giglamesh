@@ -146,8 +146,5 @@ WORKDIR /home/$USERNAME
 COPY entrypoint.sh /home/$USERNAME/entrypoint.sh
 COPY wayvnc/config_template /home/$USERNAME/.config/wayvnc/config_template
 
-# Make the entrypoint script executable
-RUN chmod +x /home/$USERNAME/entrypoint.sh
-
 # Run the entrypoint script
-ENTRYPOINT ["/home/giglamesh/entrypoint.sh"]
+CMD ["/bin/bash", "/home/giglamesh/entrypoint.sh"]
