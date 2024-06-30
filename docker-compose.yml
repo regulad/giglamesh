@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  giglamesh:
+    image: "ghcr.io/regulad/giglamesh:latest"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5900:5900/tcp"  # your VNC port
+    environment:
+      DEVICE_IP: ${DEVICE_IP:-127.0.0.1}
+      DEVICE_ADB_PORT: ${DEVICE_ADB_PORT:-5555}
