@@ -89,8 +89,8 @@ cd ..
 
 # will load everything into /usr/local/bin/scrcpy
 git clone https://github.com/Genymobile/scrcpy
-git checkout a8871bfad77ed1d0b968f3919df685a301849f8f
 cd scrcpy/
+git checkout a8871bfad77ed1d0b968f3919df685a301849f8f
 meson setup "build-server/" --buildtype=release --strip -Db_lto=true -Dcompile_app=false -Dcompile_server=true
 meson setup "build-client/" --buildtype=release --strip -Db_lto=true -Dcompile_app=true -Dcompile_server=false -Dprebuilt_server=/deps/scrcpy/build-server/scrcpy-server
 ninja -C build-client/ install
