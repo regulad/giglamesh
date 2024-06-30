@@ -16,7 +16,7 @@ RUN apt-get update \
                       libavcodec-dev libavdevice-dev libavformat-dev libavutil-dev \
                       libswresample-dev libusb-1.0-0 libusb-1.0-0-dev \
                       \
-                      meson libwayland-dev libwayland-protocols-dev libdrm-dev libxbcommon-dev libpixman-1-dev \
+                      meson libwayland-dev wayland-protocols libdrm-dev libxkbcommon-dev libpixman-1-dev \
                       \
                       libwayland-dev libxkbcommon-dev \
                       \
