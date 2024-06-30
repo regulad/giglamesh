@@ -48,7 +48,7 @@ RUN git clone https://github.com/Genymobile/scrcpy \
 RUN git clone https://gitlab.freedesktop.org/wayland/wayland.git \
     && cd wayland/ \
     && meson setup build/ \
-    && ninja -C build/ \
+    && ninja -C build/ -Dtests=false -Ddocumentation=false \
     && ninja -C build/ install \
     && cd .. \
     && rm -rf wayland
