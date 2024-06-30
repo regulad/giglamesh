@@ -11,6 +11,7 @@ LABEL Version=0.0.1
 # cage
 # wayvnc
 # adb/platform tools for us & scrcpy
+# this builds our "transient dependency" layer
 RUN echo "deb http://deb.debian.org/debian bookworm-backports main contrib non-free" >> /etc/apt/sources.list \
     && apt-get update \
     && apt-get -y install ffmpeg libsdl2-2.0-0 adb wget \
@@ -36,12 +37,14 @@ RUN echo "deb http://deb.debian.org/debian bookworm-backports main contrib non-f
                       \
                       adb android-sdk-platform-tools-common fastboot cmake coreutils gettext-base \
     && apt-get clean
+# TODO: install the dependencies in the same layer as the apt-get and then apt-get remove developmnent dependencies to save layer size
 
 # we are going to do this all in one layer (each) to prevent the cache from balloning
 # we would ./install_release.sh but we need to build the server first since we might be on arm64 and not the assumed x86_64
 
 WORKDIR /deps
 
+# install our "direct dependencies"
 COPY install-dependencies.sh /deps/install-dependencies.sh
 RUN chmod +x /deps/install-dependencies.sh
 RUN /deps/install-dependencies.sh
