@@ -6,6 +6,7 @@ LABEL Version=0.0.1
 
 # in order:
 # scrcpy
+# wayland
 # wlroots
 # cage
 # wayvnc
@@ -16,6 +17,8 @@ RUN apt-get update \
                       libavcodec-dev libavdevice-dev libavformat-dev libavutil-dev \
                       libswresample-dev libusb-1.0-0 libusb-1.0-0-dev \
                       \
+                      expat libexpat1 libexpat1-dev \
+                      \
                       meson libwayland-dev wayland-protocols libdrm-dev libxkbcommon-dev libpixman-1-dev \
                       \
                       libwayland-dev libxkbcommon-dev \
@@ -24,7 +27,7 @@ RUN apt-get update \
                       libpam0g-dev libgnutls28-dev libavfilter-dev libavcodec-dev \
                       libavutil-dev libturbojpeg0-dev scdoc \
                       \
-                      adb android-sdk-platform-tools-common fastboot \
+                      adb android-sdk-platform-tools-common fastboot cmake \
     && apt-get clean
 
 # we are going to do this all in one layer (each) to prevent the cache from balloning
