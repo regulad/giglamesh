@@ -63,15 +63,19 @@ RUN git clone https://gitlab.freedesktop.org/wayland/wayland-protocols.git \
     && cd .. \
     && rm -rf wayland-protocols
 
-# build & install wlroots (dependency for cage)
+# build & install wlroots (dependency for cage) (pinned to v0.17.0)
 RUN git clone https://gitlab.freedesktop.org/wlroots/wlroots.git \
     && cd wlroots/ \
-    && git checkout 54ec69f682a5c49300ca2ed285913bcedeee5c06 \
+    && git checkout a2d2c38a3127745629293066beeed0a649dff8de \
     && meson setup build/ \
     && ninja -C build/ \
     && ninja -C build/ install \
     && cd .. \
     && rm -rf wlroots
+
+# runs in a run stage (makes a layer) because I need to do uname -m to get the architecture. \
+# hopefully the extra colon doens't hurt
+RUN export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/$(uname -m)-linux-gnu/pkgconfig
 
 # now build cage (our kiosk compositor)
 RUN git clone https://github.com/cage-kiosk/cage.git \
