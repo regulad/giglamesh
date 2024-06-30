@@ -17,7 +17,7 @@ RUN apt-get update \
                       libavcodec-dev libavdevice-dev libavformat-dev libavutil-dev \
                       libswresample-dev libusb-1.0-0 libusb-1.0-0-dev \
                       \
-                      expat libexpat1 libexpat1-dev \
+                      expat libexpat1 libexpat1-dev libxml++2.6-2v5 libxml++2.6-dev \
                       \
                       meson libwayland-dev wayland-protocols libdrm-dev libxkbcommon-dev libpixman-1-dev \
                       \
