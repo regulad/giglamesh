@@ -36,7 +36,7 @@ RUN apt-get update \
 
 WORKDIR /deps
 
-# will load everything into /usr/local/bin/scrcpy
+# will load everything into /usr/local/bin/scrcpy (a8871bfad77ed1d0b968f3919df685a301849f8f at authoring)
 RUN git clone https://github.com/Genymobile/scrcpy \
     && cd scrcpy/ \
     && meson setup "build-server/" --buildtype=release --strip -Db_lto=true -Dcompile_app=false -Dcompile_server=true \
@@ -52,6 +52,14 @@ RUN git clone https://gitlab.freedesktop.org/wayland/wayland.git \
     && ninja -C build/ install \
     && cd .. \
     && rm -rf wayland
+
+# build & install libdrm (b065dbc5cc91bab36856c7f7d6610ddf0a3bfd75 at authoring)
+RUN git clone https://gitlab.freedesktop.org/mesa/drm.git \
+    && cd drm/ \
+    && meson build/ \
+    && ninja -C build/ install \
+    && cd .. \
+    && rm -rf drm
 
 # build & install wlroots (dependency for cage) (67b88e46b04a9a42a735f88066872821caab8e7d at authoring)
 RUN git clone https://gitlab.freedesktop.org/wlroots/wlroots.git \
