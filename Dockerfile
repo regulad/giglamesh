@@ -36,42 +36,47 @@ RUN apt-get update \
 
 WORKDIR /deps
 
-# build & install wayland (dependency for wlroots, needs a new version) (1d5772b7b9d0bbfbc27557721f62a9f805b66929 at authoring)
+# build & install wayland (dependency for wlroots, needs a new version)
 RUN git clone https://gitlab.freedesktop.org/wayland/wayland.git \
     && cd wayland/ \
+    && git checkout 1d5772b7b9d0bbfbc27557721f62a9f805b66929 \
     && meson build/ \
     && ninja -C build/ install \
     && cd .. \
     && rm -rf wayland
 
-# build & install libdrm (dep for wlroots, needs a new version) (b065dbc5cc91bab36856c7f7d6610ddf0a3bfd75 at authoring)
+# build & install libdrm (dep for wlroots, needs a new version)
 RUN git clone https://gitlab.freedesktop.org/mesa/drm.git \
     && cd drm/ \
+    && git checkout b065dbc5cc91bab36856c7f7d6610ddf0a3bfd75 \
     && meson build/ \
     && ninja -C build/ install \
     && cd .. \
     && rm -rf drm
 
-# build & install wayland-protocol (dep for wlroots, needs a new version) (7d5a3a8b494ae44cd9651f9505e88a250082765e at authoring)
+# build & install wayland-protocol (dep for wlroots, needs a new version)
 RUN git clone https://gitlab.freedesktop.org/wayland/wayland-protocols.git \
     && cd wayland-protocols/ \
+    && git checkout 7d5a3a8b494ae44cd9651f9505e88a250082765e \
     && meson build/ \
     && ninja -C build/ install \
     && cd .. \
     && rm -rf wayland-protocols
 
-# build & install wlroots (dependency for cage) (67b88e46b04a9a42a735f88066872821caab8e7d at authoring)
+# build & install wlroots (dependency for cage)
 RUN git clone https://gitlab.freedesktop.org/wlroots/wlroots.git \
     && cd wlroots/ \
+    && git checkout 54ec69f682a5c49300ca2ed285913bcedeee5c06 \
     && meson setup build/ \
     && ninja -C build/ \
     && ninja -C build/ install \
     && cd .. \
     && rm -rf wlroots
 
-# now build cage (our kiosk compositor) (e7d8780f46277af87881e0be91cb2092541bb1d5 at authoring)
+# now build cage (our kiosk compositor)
 RUN git clone https://github.com/cage-kiosk/cage.git \
     && cd cage/ \
+    && git checkout e7d8780f46277af87881e0be91cb2092541bb1d5 \
     && meson build \
     && ninja -C build \
     && ninja -C build install \
