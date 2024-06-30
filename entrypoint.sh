@@ -24,18 +24,82 @@ echo "Injecting environment variables into wayvnc config..."
 rm -f ~/.config/wayvnc/config || exit 1
 envsubst < ~/.config/wayvnc/config_template > ~/.config/wayvnc/config || exit 1
 
+function connect_adb() {
+  echo "Attempting ADB connection..."
+  adb connect "$DEVICE_IP":"$DEVICE_ADB_PORT" | grep "connected"  # handles "connected to" and "already connected to"
+}
+
 echo "Connecting to ADB device..."
-adb connect "$DEVICE_IP":"$DEVICE_ADB_PORT" | grep "connected"Wh || exit 1
+while ! connect_adb;
+do
+  echo "Failed to connect to ADB device, retrying..."
+  sleep 10
+done
+echo "Connected to ADB device."
 
 # running
 
 function open_scrcpy() {
   echo "Starting scrcpy..."
+
+#  $ cage
+#  Usage: cage [OPTIONS] [--] APPLICATION
+#
+#   -d      Don't draw client side decorations, when possible
+#   -h      Display this help message
+#   -m extend Extend the display across all connected outputs (default)
+#   -m last Use only the last connected output
+#   -s      Allow VT switching
+#   -v      Show the version number and exit
+#
+#   Use -- when you want to pass arguments to APPLICATION
+
   SDL_VIDEODRIVER=wayland cage scrcpy || exit 1
 }
 
 function open_wayvnc() {
   echo "Starting wayvnc... (container will be ready soon)"
+
+#  $ wayvnc --help
+#  Usage: wayvnc [options] [address [port]]
+#
+#  Starts a VNC server for $WAYLAND_DISPLAY
+#
+#  Arguments:
+#      address        The IP address or unix socket path to listen on.
+#                     Default: 127.0.0.1
+#      port           The TCP port to listen on.
+#                     Default: 5900
+#
+#  Options:
+#      -C,--config=<path>                        Select a config file.
+#      -g,--gpu                                  Enable features that need GPU.
+#      -o,--output=<name>                        Select output to capture.
+#      -k,--keyboard=<layout>[-<variant>]        Select keyboard layout with an
+#                                                optional variant.
+#      -s,--seat=<name>                          Select seat by name.
+#      -S,--socket=<path>                        Control socket path.
+#      -t,--transient-seat                       Use transient seat.
+#      -r,--render-cursor                        Enable overlay cursor rendering.
+#      -f,--max-fps=<fps>                        Set rate limit.
+#                                                Default: 30
+#      -p,--performance                          Show performance counters.
+#      -u,--unix-socket                          Create unix domain socket.
+#      -x,--external-listener-fd=<fd>            Listen on a bound socket at <fd>
+#                                                instead of binding to an address.
+#                                                Default: -1
+#      -d,--disable-input                        Disable all remote input.
+#      -D,--detached                             Start detached from a compositor.
+#      -V,--version                              Show version info.
+#      -v,--verbose                              Be more verbose. Same as setting
+#                                                --log-level=info
+#      -w,--websocket                            Create a websocket.
+#      -L,--log-level=<level>                    Set log level. The levels are:
+#                                                error, warning, info, debug trace
+#                                                and quiet.
+#                                                Default: warning
+#      -h,--help                                 Get help (this text).
+
   wayvnc 0.0.0.0 || exit 1
 }
 
