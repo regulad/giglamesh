@@ -18,6 +18,7 @@ RUN apt-get update \
                       libswresample-dev libusb-1.0-0 libusb-1.0-0-dev \
                       \
                       expat libexpat1 libexpat1-dev libxml++2.6-2v5 libxml++2.6-dev \
+                      doxygen graphviz xmlto xsltproc \
                       \
                       meson libwayland-dev wayland-protocols libdrm-dev libxkbcommon-dev libpixman-1-dev \
                       \
@@ -44,7 +45,7 @@ RUN git clone https://github.com/Genymobile/scrcpy \
     && cd .. \
     && rm -rf scrcpy
 
-# build & install wayland (dependency for wlroots, needs a new version)
+# build & install wayland (dependency for wlroots, needs a new version) (1d5772b7b9d0bbfbc27557721f62a9f805b66929 at authoring)
 RUN git clone https://gitlab.freedesktop.org/wayland/wayland.git \
     && cd wayland/ \
     && meson setup build/ \
@@ -53,7 +54,7 @@ RUN git clone https://gitlab.freedesktop.org/wayland/wayland.git \
     && cd .. \
     && rm -rf wayland
 
-# build & install wlroots (dependency for cage)
+# build & install wlroots (dependency for cage) (67b88e46b04a9a42a735f88066872821caab8e7d at authoring)
 RUN git clone https://gitlab.freedesktop.org/wlroots/wlroots.git \
     && cd wlroots/ \
     && meson setup build/ \
@@ -62,7 +63,7 @@ RUN git clone https://gitlab.freedesktop.org/wlroots/wlroots.git \
     && cd .. \
     && rm -rf wlroots
 
-# now build cage (our kiosk compositor)
+# now build cage (our kiosk compositor) (e7d8780f46277af87881e0be91cb2092541bb1d5 at authoring)
 RUN git clone https://github.com/cage-kiosk/cage.git \
     && cd cage/ \
     && meson build \
@@ -71,7 +72,7 @@ RUN git clone https://github.com/cage-kiosk/cage.git \
     && cd .. \
     && rm -rf cage
 
-# now build wayvnc (our vnc server)
+# now build wayvnc (our vnc server) (2d62e1203e5589cf754e9b7031ddc609124cf156 at authoring)
 # https://github.com/any1/wayvnc#configure-and-build
 RUN git clone https://github.com/any1/wayvnc.git \
     && git clone https://github.com/any1/neatvnc.git \
