@@ -1,6 +1,6 @@
 # Giglamesh
 
-Giglamesh is a project designed to connect to any Android device using Android Debug Bridge (ADB) and host a Virtual Network Computing (VNC) server. This allows you to connect to the VNC server and interact with the Android device as if you were using it directly. This circumvents the need to install any additional software on the Android device itself.
+Giglamesh creates a VNC server from any ADB device. This allows you to connect to the VNC server and interact with the Android device as if you were using it directly. This circumvents the need to install any additional software on the Android device itself.
 
 Built-in support for `arm64` platforms is included and prioritized.
 
