@@ -8,8 +8,10 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5900:5900/tcp"  # your VNC port
+    networks:
+      - default
     environment:
-      DEVICE_IP: ${DEVICE_IP:-172.21.0.1}
+      DEVICE_IP: ${DEVICE_IP:-172.28.0.1}
       DEVICE_ADB_PORT: ${DEVICE_ADB_PORT:-5555}
       VNC_USERNAME: ${VNC_USERNAME:-user}
       VNC_PASSWORD: ${VNC_PASSWORD:-password}
@@ -17,5 +19,7 @@ networks:
   default:
     driver: bridge
     ipam:
+      driver: default
       config:
-        - subnet: "172.21.0.0/16"
+        - subnet: "172.28.0.0/16"
+          gateway: "172.28.0.1"
