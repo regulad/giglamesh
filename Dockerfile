@@ -48,8 +48,8 @@ RUN git clone https://gitlab.freedesktop.org/wayland/wayland.git \
     && git checkout 1d5772b7b9d0bbfbc27557721f62a9f805b66929 \
     && meson build/ \
     && ninja -C build/ install \
-    && cd .. \
-    && rm -rf wayland
+    && cd .. #\
+#    && rm -rf wayland
 
 # build & install libdrm (dep for wlroots, needs a new version)
 RUN git clone https://gitlab.freedesktop.org/mesa/drm.git \
@@ -57,8 +57,8 @@ RUN git clone https://gitlab.freedesktop.org/mesa/drm.git \
     && git checkout b065dbc5cc91bab36856c7f7d6610ddf0a3bfd75 \
     && meson build/ \
     && ninja -C build/ install \
-    && cd .. \
-    && rm -rf drm
+    && cd .. #\
+#    && rm -rf drm
 
 # build & install wayland-protocol (dep for wlroots, needs a new version)
 RUN git clone https://gitlab.freedesktop.org/wayland/wayland-protocols.git \
@@ -66,8 +66,8 @@ RUN git clone https://gitlab.freedesktop.org/wayland/wayland-protocols.git \
     && git checkout 7d5a3a8b494ae44cd9651f9505e88a250082765e \
     && meson build/ \
     && ninja -C build/ install \
-    && cd .. \
-    && rm -rf wayland-protocols
+    && cd .. #\
+#    && rm -rf wayland-protocols
 
 # build & install wlroots (dependency for cage) (pinned to v0.17.0)
 RUN git clone https://gitlab.freedesktop.org/wlroots/wlroots.git \
@@ -76,8 +76,8 @@ RUN git clone https://gitlab.freedesktop.org/wlroots/wlroots.git \
     && meson setup build/ -Dxwayland=enabled \
     && ninja -C build/ \
     && ninja -C build/ install \
-    && cd .. \
-    && rm -rf wlroots
+    && cd .. #\
+#    && rm -rf wlroots
 
 # runs in a run stage (makes a layer) because I need to do uname -m to get the architecture. \
 # hopefully the extra colon doens't hurt
@@ -90,8 +90,8 @@ RUN git clone https://github.com/cage-kiosk/cage.git \
     && meson build \
     && ninja -C build \
     && ninja -C build install \
-    && cd .. \
-    && rm -rf cage
+    && cd .. #\
+#    && rm -rf cage
 
 # now build wayvnc (our vnc server) (2d62e1203e5589cf754e9b7031ddc609124cf156 at authoring)
 # https://github.com/any1/wayvnc#configure-and-build
@@ -111,8 +111,8 @@ RUN git clone https://github.com/any1/wayvnc.git \
     && meson build \
     && ninja -C build \
     && ninja -C build install \
-    && cd .. \
-    && rm -rf wayvnc neatvnc aml
+    && cd .. #\
+#    && rm -rf wayvnc neatvnc aml
 
 # will load everything into /usr/local/bin/scrcpy (a8871bfad77ed1d0b968f3919df685a301849f8f at authoring)
 RUN git clone https://github.com/Genymobile/scrcpy \
@@ -120,8 +120,8 @@ RUN git clone https://github.com/Genymobile/scrcpy \
     && meson setup "build-server/" --buildtype=release --strip -Db_lto=true -Dcompile_app=false -Dcompile_server=true \
     && meson setup "build-client/" --buildtype=release --strip -Db_lto=true -Dcompile_app=true -Dcompile_server=false -Dprebuilt_server=/scrcpy/build-server/scrcpy-server \
     && ninja -C build-client/ install \
-    && cd .. \
-    && rm -rf scrcpy
+    && cd .. #\
+#    && rm -rf scrcpy
 
 # finally, we are done with the deps
 

@@ -25,6 +25,7 @@ rm -f ~/.config/wayvnc/config || exit 1
 envsubst < ~/.config/wayvnc/config_template > ~/.config/wayvnc/config || exit 1
 
 echo "Connecting to ADB device..."
+sleep 10 # give adb device time to start on another container
 adb connect "$DEVICE_IP":"$DEVICE_ADB_PORT" | grep "connected" > /dev/null || exit 1
 
 # running
