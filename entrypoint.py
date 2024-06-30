@@ -4,6 +4,7 @@
 # i *could* do this in bash but I am far more comfortable doing it with subprocess in python and it will definitely work better
 
 import subprocess
+import re
 
 
 if __name__ == "__main__":
@@ -14,7 +15,7 @@ if __name__ == "__main__":
         ["cage", "scrcpy"],
         shell=True,
         stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
         env={
             "XDG_RUNTIME_DIR": "/tmp",
             # "WAYLAND_DISPLAY": "wayland-0",
@@ -36,10 +37,18 @@ if __name__ == "__main__":
 
     # wait to read ready from cage
     for line in cage.stdout:
-        print(line)
-        if b"ready" in line:
-            print("Starting wayvnc...")
+        line_string = line.decode("utf-8")
+        print(line_string)  # newlines are already stripped
+        # we are looking for the pattern is running on Wayland display %s, where %s is the WAYLAND_SERVER
+        # use regex
+        match = re.match(r".*running on Wayland display (.*)", line_string)
+        if match:
+            wayland_display = match.group(1)
+            print(f"Wayland display: {wayland_display}")
             break
+    else:
+        print("Cage never started properly.")
+        exit(1)
 
     # start wayvnc
     wayvnc = subprocess.Popen(
@@ -48,10 +57,8 @@ if __name__ == "__main__":
             "0.0.0.0",
         ],
         shell=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
         env={
-            "WAYLAND_DISPLAY": "wayland-0",
+            "WAYLAND_DISPLAY": wayland_display,
         },
     )
 
