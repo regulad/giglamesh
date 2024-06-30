@@ -52,6 +52,14 @@ RUN git clone https://gitlab.freedesktop.org/mesa/drm.git \
     && cd .. \
     && rm -rf drm
 
+# build & install wayland-protocol (dep for wlroots, needs a new version) (7d5a3a8b494ae44cd9651f9505e88a250082765e at authoring)
+RUN git clone https://gitlab.freedesktop.org/wayland/wayland-protocols.git \
+    && cd wayland-protocols/ \
+    && meson build/ \
+    && ninja -C build/ install \
+    && cd .. \
+    && rm -rf wayland-protocols
+
 # build & install wlroots (dependency for cage) (67b88e46b04a9a42a735f88066872821caab8e7d at authoring)
 RUN git clone https://gitlab.freedesktop.org/wlroots/wlroots.git \
     && cd wlroots/ \
