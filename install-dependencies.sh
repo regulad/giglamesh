@@ -9,7 +9,7 @@ git clone https://gitlab.freedesktop.org/wayland/wayland.git
 cd wayland/
 git checkout 1d5772b7b9d0bbfbc27557721f62a9f805b66929
 meson build/
-ninja -C build/ install
+#ninja -C build/ install
 cd ..
 
 # build & install libdrm (dep for wlroots, needs a new version)
@@ -17,7 +17,7 @@ git clone https://gitlab.freedesktop.org/mesa/drm.git
 cd drm/
 git checkout b065dbc5cc91bab36856c7f7d6610ddf0a3bfd75
 meson build/
-ninja -C build/ install
+#ninja -C build/ install
 cd ..
 
 # build & install wayland-protocol (dep for wlroots, needs a new version)
@@ -29,13 +29,13 @@ cd subprojects
 ln -s ../../wayland .
 cd ..
 meson build/
-ninja -C build/ install
+#ninja -C build/ install
 cd ..
 
 # build & install wlroots (dependency for cage) (pinned to v0.17.0)
 git clone https://gitlab.freedesktop.org/wlroots/wlroots.git
 cd wlroots/
-git checkout a2d2c38a3127745629293066beeed0a3bfd8de
+git checkout a2d2c38a3127745629293066beeed0a649dff8de
 mkdir subprojects
 cd subprojects
 ln -s ../../wayland .
@@ -43,8 +43,7 @@ ln -s ../../wayland-protocols .
 ln -s ../../drm .
 cd ..
 meson setup build/ -Dxwayland=enabled
-ninja -C build/
-ninja -C build/ install
+#ninja -C build/ install
 cd ..
 
 # now build cage (our kiosk compositor)
@@ -58,9 +57,8 @@ ln -s ../../wayland .
 ln -s ../../wayland-protocols .
 ln -s ../../drm .
 cd ..
-meson build
-ninja -C build
-ninja -C build install
+meson build/
+ninja -C build/ install
 cd ..
 
 # now build wayvnc (our vnc server)
@@ -80,9 +78,9 @@ cd neatvnc/subprojects
 ln -s ../../aml .
 cd ../..
 cd wayvnc/
-meson build
-ninja -C build
-ninja -C build install
+meson build/
+ninja -C build/
+ninja -C build/ install
 cd ..
 
 # will load everything into /usr/local/bin/scrcpy (a8871bfad77ed1d0b968f3919df685a301849f8f at authoring)
