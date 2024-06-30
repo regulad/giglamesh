@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   giglamesh:
-    image: "ghcr.io/regulad/giglamesh:latest"
+    image: "ghcr.io/regulad/giglamesh:master"
     build:
       context: .
       dockerfile: Dockerfile
