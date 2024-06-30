@@ -34,7 +34,7 @@ RUN echo "deb http://deb.debian.org/debian bookworm-backports main contrib non-f
                       libpam0g-dev libgnutls28-dev libavfilter-dev libavcodec-dev \
                       libavutil-dev libturbojpeg0-dev scdoc \
                       \
-                      adb android-sdk-platform-tools-common fastboot cmake coreutils \
+                      adb android-sdk-platform-tools-common fastboot cmake coreutils gettext-base \
     && apt-get clean
 
 # we are going to do this all in one layer (each) to prevent the cache from balloning
@@ -122,11 +122,6 @@ RUN git clone https://github.com/Genymobile/scrcpy \
     && ninja -C build-client/ install \
     && cd .. \
     && rm -rf scrcpy
-
-# add go to path for envsubst
-RUN rm -rf /usr/local/go && tar -C /usr/local -xzf go1.22.4.linux-$(arch).tar.gz
-ENV PATH=$PATH:/usr/local/go/bin
-RUN go install github.com/a8m/envsubst/cmd/envsubst@latest # v1.4.2 at authoring
 
 # finally, we are done with the deps
 
