@@ -7,7 +7,7 @@ set -o pipefail
 # build & install wayland (dependency for wlroots, needs a new version)
 git clone https://gitlab.freedesktop.org/wayland/wayland.git
 cd wayland/ && git checkout 1d5772b7b9d0bbfbc27557721f62a9f805b66929 && cd ..
-# meson build/
+#meson build/
 #ninja -C build/ install
 
 # build & install libdrm (dep for wlroots, needs a new version)
