@@ -13,13 +13,12 @@ if __name__ == "__main__":
 
     # start the cage server
     cage = subprocess.Popen(
-        ["cage", "scrcpy"],
+        "cage scrcpy",
         shell=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         env={
             "XDG_RUNTIME_DIR": "/tmp",
-            # "WAYLAND_DISPLAY": "wayland-0",
             "SDL_VIDEODRIVER": "wayland",
         }
         | os.environ,
@@ -54,10 +53,7 @@ if __name__ == "__main__":
 
     # start wayvnc
     wayvnc = subprocess.Popen(
-        [
-            "wayvnc",
-            "0.0.0.0",
-        ],
+        "wayvnc 0.0.0.0",
         shell=True,
         env={
             "WAYLAND_DISPLAY": wayland_display,
