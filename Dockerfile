@@ -11,8 +11,9 @@ LABEL Version=0.0.1
 # cage
 # wayvnc
 # adb/platform tools for us & scrcpy
-RUN apt-get update \
-    && apt -y install ffmpeg libsdl2-2.0-0 adb wget \
+RUN echo "deb http://deb.debian.org/debian bookworm-backports main contrib non-free" >> /etc/apt/sources.list \
+    && apt-get update \
+    && apt-get -y install ffmpeg libsdl2-2.0-0 adb wget \
                       gcc git pkg-config meson ninja-build libsdl2-dev \
                       libavcodec-dev libavdevice-dev libavformat-dev libavutil-dev \
                       libswresample-dev libusb-1.0-0 libusb-1.0-0-dev \
@@ -21,6 +22,8 @@ RUN apt-get update \
                       doxygen graphviz xmlto xsltproc \
                       \
                       meson libxkbcommon-dev libpixman-1-dev \
+                      xwayland libxcb1 libxcb1-dev libxcb-render-util0 libxcb-render-util0-dev libxcb-ewmh-dev libxcb-errors-dev/bookworm-backports libxcb-errors0/bookworm-backports \
+                      libseat-dev libseat1 udev libudev-dev libudev1 \
                       \
                       libxkbcommon-dev \
                       \
@@ -67,7 +70,7 @@ RUN git clone https://gitlab.freedesktop.org/wayland/wayland-protocols.git \
 RUN git clone https://gitlab.freedesktop.org/wlroots/wlroots.git \
     && cd wlroots/ \
     && git checkout a2d2c38a3127745629293066beeed0a649dff8de \
-    && meson setup build/ \
+    && meson setup build/ -Dxwayland=true \
     && ninja -C build/ \
     && ninja -C build/ install \
     && cd .. \
