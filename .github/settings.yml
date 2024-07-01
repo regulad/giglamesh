@@ -58,7 +58,7 @@ repository:
   enable_vulnerability_alerts: true
 
 branches:
-  - name: master
+  - name: wayland
     # https://docs.github.com/en/rest/reference/repos#update-branch-protection
     # Branch Protection settings. Set to null to disable
     protection:
