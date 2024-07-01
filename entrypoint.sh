@@ -51,7 +51,8 @@ export XDG_RUNTIME_DIR="/tmp/vnc"
 export SDL_VIDEODRIVER="wayland"  # this is for scrcpy
 #export WLR_LIBINPUT_NO_DEVICES="1"  # this is for cage
 
-elogind &  # start elogind for cage
+#elogind &  # start elogind for cage  # couldn't get elongd on easy since debian is built around systemd.
+#                                     # i am going to try to just run systemd next before i do dependency management
 cage scrcpy &> /tmp/cage.log &  # &> redirects both stderr & stdout
 
 wayland_display=""
