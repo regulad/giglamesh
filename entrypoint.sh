@@ -70,4 +70,4 @@ if [ -z "$wayland_display" ]; then
     exit 1
 fi
 
-wayvnc --config=/tmp/vnc/config 0.0.0.0
+wayvnc --config=/tmp/vnc/config 0.0.0.0 5900
