@@ -51,7 +51,12 @@ export XDG_RUNTIME_DIR="/tmp/vnc"
 export SDL_VIDEODRIVER="wayland"  # this is for scrcpy
 #export WLR_LIBINPUT_NO_DEVICES="1"  # this is for cage
 
-ln -s "$(tty)" /dev/tty0  # the integrated seatd in cage only knows to look here
+# see if the /dev/tty0 symlink is needed
+if [ ! -e /dev/tty0 ]; then
+  echo "Creating /dev/tty0 symlink..."
+  ln -s "$(tty)" /dev/tty0  # integrated seatd will only work with /dev/tty0
+  # the ptty will not be enough for seatd to work on most systems (privileged containers will be required) however some host distros could possibly be more lenient
+fi
 cage scrcpy &> /tmp/cage.log &  # &> redirects both stderr & stdout
 
 wayland_display=""
