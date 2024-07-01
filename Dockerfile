@@ -4,9 +4,9 @@ LABEL Name=giglamesh
 LABEL Version=0.0.1
 
 WORKDIR /deps
-COPY install-cage-wayvnc.sh /deps/install-cage-wayvnc.sh
+COPY scripts/install-cage-wayvnc.sh /deps/install-cage-wayvnc.sh
 RUN chmod +x /deps/install-cage-wayvnc.sh
-COPY install-scrcpy.sh /deps/install-scrcpy.sh
+COPY scripts/install-scrcpy.sh /deps/install-scrcpy.sh
 RUN chmod +x /deps/install-scrcpy.sh
 
 # https://packages.debian.org/index
@@ -65,9 +65,9 @@ RUN echo "deb http://deb.debian.org/debian bookworm-backports main contrib non-f
 
 WORKDIR /
 
-COPY entrypoint.sh /root/entrypoint.sh
+COPY scripts/entrypoint.sh /root/entrypoint.sh
 RUN chmod +x /root/entrypoint.sh
-COPY wayvnc_config_template /root/config_template
+COPY wayvnc/wayvnc_config_template /root/config_template
 
 # Run the entrypoint script
 ENTRYPOINT ["/bin/bash", "/root/entrypoint.sh"]
