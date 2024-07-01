@@ -43,7 +43,7 @@ RUN echo "deb http://deb.debian.org/debian bookworm-backports main contrib non-f
                       libpam0g-dev libgnutls28-dev libavfilter-dev libavcodec-dev \
                       libavutil-dev libturbojpeg0-dev scdoc \
                       \
-                      adb android-sdk-platform-tools-common fastboot cmake coreutils gettext-base weston \
+                      adb android-sdk-platform-tools-common fastboot cmake coreutils gettext-base weston curl \
     && /deps/install-scrcpy.sh \
     && /deps/install-cage-wayvnc.sh \
     && apt -y remove gcc pkg-config meson ninja-build libsdl2-dev libavcodec-dev libavdevice-dev libavformat-dev libavutil-dev \
@@ -55,6 +55,8 @@ RUN echo "deb http://deb.debian.org/debian bookworm-backports main contrib non-f
                       libxcb-res0-dev libxcb-xfixes0-dev libdisplay-info-dev/bookworm-backports libliftoff-dev \
                       libwlroots-dev libxkbcommon-dev libjansson-dev libpam0g-dev libgnutls28-dev libavfilter-dev \
                       libavcodec-dev libavutil-dev libturbojpeg0-dev scdoc \
+                      cmake curl \
+    && apt -y autoremove \
     && apt clean
 
 # finally, we are done with the deps

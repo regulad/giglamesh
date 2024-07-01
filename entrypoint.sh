@@ -63,6 +63,8 @@ rm -f /tmp/cage.log
 touch /tmp/cage.log
 # https://gist.github.com/regulad/64cc432a8d201ea6d9136722d9bdc66e
 # https://gist.github.com/regulad/047f1bbe20614681a263caaa16dee661 & https://wiki.libsdl.org/SDL2/FAQUsingSDL
+# debugging tips: https://github.com/cage-kiosk/cage/issues/184#issuecomment-844666508
+# cage REQUIRES a session, maybe we need to switch to something x11-based
 # tee logs to /tmp/cage.log and to stdout
 # |& is a bashism that combines stdout and stderr
 # & runs the command in the background
