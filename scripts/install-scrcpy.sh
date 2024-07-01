@@ -11,7 +11,7 @@ set -o pipefail
 SCRCPY_SERVER_SHA256=1488b1105d6aff534873a26bf610cd2aea06ee867dd7a4d9c6bb2c091396eb15
 curl -L -o scrcpy-server "https://github.com/Genymobile/scrcpy/releases/download/v2.5/scrcpy-server-v2.5"
 echo "$SCRCPY_SERVER_SHA256 scrcpy-server" | sha256sum -c
-SCRCPY_SERVER_PATH="$(pwd)/scrcpy-server"
+SCRCPY_SERVER_PATH="$(pwd)/scrcpy-server"  # resolves to direct path; required for the client build
 
 # will load everything into /usr/local/bin/scrcpy
 git clone https://github.com/Genymobile/scrcpy
