@@ -58,21 +58,25 @@ if [ ! -e /dev/tty0 ]; then
   # the ptty will not be enough for seatd to work on most systems (privileged containers will be required) however some host distros could possibly be more lenient
 fi
 rm -f /tmp/cage.log
+touch /tmp/cage.log
 # https://gist.github.com/regulad/64cc432a8d201ea6d9136722d9bdc66e
 # https://gist.github.com/regulad/047f1bbe20614681a263caaa16dee661
-cage -- scrcpy 2>&1 | tee /tmp/cage.log &  # 2&1> redirects stderr & stdout into just stdout, tee writes to file and stdout instead of what redirecting (> or &>) does which is just go to that file
+# tee logs to /tmp/cage.log and to stdout
+# |& is a bashism that combines stdout and stderr
+# & runs the command in the background
+(cage -- scrcpy |& tee /tmp/cage.log) &
 
-wayland_display=""
+wayland_display_regex=""
 max_wait_seconds=60
 counter=0
-while [ -z "$wayland_display" ] && [ $counter -lt $max_wait_seconds ]; do
+while [ -z "$wayland_display_regex" ] && [ $counter -lt $max_wait_seconds ]; do
   # wait for cage to start, get the wayland display
-  wayland_display=$(tail -n 100 /tmp/cage.log | grep -oP 'running on Wayland display \K.*')
+  wayland_display_regex=$(tail -n 100 /tmp/cage.log | grep -oP 'running on Wayland display \K.*')
   sleep 1
   counter=$((counter + 1))
 done
 
-if [ -z "$wayland_display" ]; then
+if [ -z "$wayland_display_regex" ]; then
     echo "Cage never started properly."
     exit 1
 fi
