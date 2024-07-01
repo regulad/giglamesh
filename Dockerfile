@@ -46,16 +46,16 @@ RUN echo "deb http://deb.debian.org/debian bookworm-backports main contrib non-f
                       adb android-sdk-platform-tools-common fastboot cmake coreutils gettext-base weston curl \
     && /deps/install-scrcpy.sh \
     && /deps/install-cage-wayvnc.sh \
-    && apt -y remove gcc pkg-config meson ninja-build libsdl2-dev libavcodec-dev libavdevice-dev libavformat-dev libavutil-dev \
-                      libswresample-dev libusb-1.0-0-dev libexpat1-dev libxml++2.6-dev \
-                      doxygen graphviz xmlto xsltproc \
-                      libxkbcommon-dev libpixman-1-dev \
-                      libxcb1-dev libxcb-render-util0-dev libxcb-ewmh-dev libxcb-errors-dev/bookworm-backports \
-                      libxcb-composite0-dev libseat-dev libudev-dev libxcb-icccm4-dev libxcb-render-util0-dev \
-                      libxcb-res0-dev libxcb-xfixes0-dev libdisplay-info-dev/bookworm-backports libliftoff-dev \
-                      libwlroots-dev libxkbcommon-dev libjansson-dev libpam0g-dev libgnutls28-dev libavfilter-dev \
-                      libavcodec-dev libavutil-dev libturbojpeg0-dev scdoc \
-                      cmake curl \
+#    && apt -y remove gcc pkg-config meson ninja-build libsdl2-dev libavcodec-dev libavdevice-dev libavformat-dev libavutil-dev \
+#                      libswresample-dev libusb-1.0-0-dev libexpat1-dev libxml++2.6-dev \
+#                      doxygen graphviz xmlto xsltproc \
+#                      libxkbcommon-dev libpixman-1-dev \
+#                      libxcb1-dev libxcb-render-util0-dev libxcb-ewmh-dev libxcb-errors-dev/bookworm-backports \
+#                      libxcb-composite0-dev libseat-dev libudev-dev libxcb-icccm4-dev libxcb-render-util0-dev \
+#                      libxcb-res0-dev libxcb-xfixes0-dev libdisplay-info-dev/bookworm-backports libliftoff-dev \
+#                      libwlroots-dev libxkbcommon-dev libjansson-dev libpam0g-dev libgnutls28-dev libavfilter-dev \
+#                      libavcodec-dev libavutil-dev libturbojpeg0-dev scdoc \
+#                      cmake curl \
     && apt -y autoremove \
     && apt clean
 

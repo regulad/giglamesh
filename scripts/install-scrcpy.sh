@@ -22,3 +22,4 @@ meson setup "build-client/" --buildtype=release --strip -Db_lto=true -Dcompile_a
 # we do not compile the server, it would go here
 ninja -C build-client/ install
 cd ..
+rm -rf scrcpy/  # we don't need to keep the source for the client
