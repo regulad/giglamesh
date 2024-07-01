@@ -79,7 +79,7 @@ WORKDIR /
 #WORKDIR /home/$USERNAME
 
 COPY entrypoint.sh /root/entrypoint.sh
-COPY entrypoint.py /root/entrypoint.py
+RUN chmod +x /root/entrypoint.sh
 COPY wayvnc_config_template /root/config_template
 
 # Run the entrypoint script
