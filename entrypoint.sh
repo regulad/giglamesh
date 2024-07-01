@@ -31,10 +31,10 @@ cd ~
 
 function connect_adb() {
   echo "Attempting ADB connection..."
-  adb connect "$DEVICE_IP":"$DEVICE_ADB_PORT" | grep "connected"  # handles "connected to" and "already connected to"
+  HOME=/tmp adb connect "$DEVICE_IP":"$DEVICE_ADB_PORT" | grep "connected"  # handles "connected to" and "already connected to"
 }
 
-export ANDROID_SDK_HOME="/tmp/.android"
+#export ANDROID_SDK_HOME="/tmp/.android"  # ANDROID_SDK_HOME is not checked on linux. holy balls!!!!
 echo "Connecting to ADB device..."
 while ! connect_adb;
 do
