@@ -33,6 +33,9 @@ function connect_adb() {
   HOME=/tmp adb connect "$DEVICE_IP":"$DEVICE_ADB_PORT" | grep "connected"  # handles "connected to" and "already connected to"
 }
 
+echo "Starting ADB server..."
+adb start-server
+
 #export ANDROID_SDK_HOME="/tmp/.android"  # ANDROID_SDK_HOME is not checked on linux. holy balls!!!!
 echo "Connecting to ADB device..."
 while ! connect_adb;
@@ -44,12 +47,11 @@ echo "Connected to ADB device."
 
 # running
 echo "Starting cage server..."
-
 mkdir -p /tmp/vnc
 # start the cage server
 export XDG_RUNTIME_DIR="/tmp/vnc"
 export SDL_VIDEODRIVER="wayland"  # this is for scrcpy
-#export WLR_LIBINPUT_NO_DEVICES="1"  # this is for cage
+export WLR_LIBINPUT_NO_DEVICES="1"  # this is for cage: the devices will be added later when wayvnc initializes
 
 # see if the /dev/tty0 symlink is needed
 if [ ! -e /dev/tty0 ]; then
@@ -60,11 +62,18 @@ fi
 rm -f /tmp/cage.log
 touch /tmp/cage.log
 # https://gist.github.com/regulad/64cc432a8d201ea6d9136722d9bdc66e
-# https://gist.github.com/regulad/047f1bbe20614681a263caaa16dee661
+# https://gist.github.com/regulad/047f1bbe20614681a263caaa16dee661 & https://wiki.libsdl.org/SDL2/FAQUsingSDL
 # tee logs to /tmp/cage.log and to stdout
 # |& is a bashism that combines stdout and stderr
 # & runs the command in the background
-(cage -- scrcpy |& tee /tmp/cage.log) &
+# check for a custom SCRCPY_RUN
+if [ -z "$SCRCPY_RUN" ]; then
+  SCRCPY_RUN="scrcpy -e --no-audio --no-audio-playback"
+fi
+# shellcheck disable=SC2086  # we want word splitting
+# shellcheck disable=SC2046  # we want word splitting
+# shellcheck disable=SC2116  # reliable way to split the string
+(cage -- $(echo "$SCRCPY_RUN") |& tee /tmp/cage.log) &
 cage_pid=$!
 
 wayland_display_regex=""
@@ -92,6 +101,13 @@ if [ -z "$wayland_display_regex" ]; then
     exit 1
 fi
 
+# check to see if the wayland display has already been set
+if [ -z "$WAYLAND_DISPLAY" ]; then
+  echo "Setting WAYLAND_DISPLAY to $wayland_display_regex"
+  export WAYLAND_DISPLAY="$wayland_display_regex"
+fi
+
+echo "Starting wayvnc server..."
 # https://gist.github.com/regulad/5cc442cb0afd00c31a0ce7296ca2a4ff
 wayvnc --config=/tmp/vnc/config 0.0.0.0 5900
 

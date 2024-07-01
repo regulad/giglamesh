@@ -87,12 +87,5 @@ ninja -C build/
 ninja -C build/ install
 cd ..
 
-# will load everything into /usr/local/bin/scrcpy
-git clone https://github.com/Genymobile/scrcpy
-cd scrcpy/
-git checkout a8871bfad77ed1d0b968f3919df685a301849f8f
-meson setup "build-server/" --buildtype=release --strip -Db_lto=true -Dcompile_app=false -Dcompile_server=true
-meson setup "build-client/" --buildtype=release --strip -Db_lto=true -Dcompile_app=true -Dcompile_server=false -Dprebuilt_server=/deps/scrcpy/build-server/scrcpy-server
-ninja -C build-client/ install
-cd ..
-# DEFINITELY can't delete this after we build
+# now with cage & wayvnc installed, we can remove the build directories
+rm -rf wayvnc/ cage/ wlroots/ wayland/ wayland-protocols/ drm/ neatvnc/ aml/
