@@ -53,6 +53,7 @@ export SDL_VIDEODRIVER="wayland"  # this is for scrcpy
 
 #elogind &  # start elogind for cage  # couldn't get elongd on easy since debian is built around systemd.
 #                                     # i am going to try to just run systemd next before i do dependency management
+# also worth trying: direct seatd
 cage scrcpy &> /tmp/cage.log &  # &> redirects both stderr & stdout
 
 wayland_display=""
