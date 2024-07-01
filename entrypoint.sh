@@ -65,6 +65,7 @@ touch /tmp/cage.log
 # |& is a bashism that combines stdout and stderr
 # & runs the command in the background
 (cage -- scrcpy |& tee /tmp/cage.log) &
+cage_pid=$!
 
 wayland_display_regex=""
 max_wait_seconds=60
@@ -72,6 +73,16 @@ counter=0
 while [ -z "$wayland_display_regex" ] && [ $counter -lt $max_wait_seconds ]; do
   # wait for cage to start, get the wayland display
   wayland_display_regex=$(tail -n 100 /tmp/cage.log | grep -oP 'running on Wayland display \K.*')
+
+  # Check if cage has exited
+  if ! kill -0 $cage_pid 2>/dev/null; then
+    # Wait for the process to get the exit status
+    wait $cage_pid
+    cage_exit_status=$?
+    echo "Cage exited with status $cage_exit_status"
+    exit $cage_exit_status
+  fi
+
   sleep 1
   counter=$((counter + 1))
 done

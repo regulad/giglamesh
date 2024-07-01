@@ -15,9 +15,11 @@ services:
         target: /run
       - type: tmpfs
         target: /var/run
+    # the following 4 lines are absolutely necessary to get libseat working
     read_only: true
     privileged: true
     tty: true
+    stdin_open: true
     networks:
       - default
     environment:

@@ -28,6 +28,7 @@ RUN echo "deb http://deb.debian.org/debian bookworm-backports main contrib non-f
                       libxcb-composite0-dev libxcb-composite0  \
                       libseat-dev libseat1 udev libudev-dev libudev1 libxcb-icccm4 libxcb-icccm4-dev \
                       libxcb-render-util0 libxcb-render-util0-dev libxcb-res0 libxcb-res0-dev libxcb-xfixes0 libxcb-xfixes0-dev \
+                      hwdata libdisplay-info-bin/bookworm-backports libdisplay-info-dev/bookworm-backports libdisplay-info1/bookworm-backports libliftoff0 libliftoff-dev \
                       \
                       libxkbcommon-dev libwlroots-dev libxkbcommon-dev \
                       \
