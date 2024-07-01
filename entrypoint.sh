@@ -57,7 +57,7 @@ if [ ! -e /dev/tty0 ]; then
   ln -s "$(tty)" /dev/tty0  # integrated seatd will only work with /dev/tty0
   # the ptty will not be enough for seatd to work on most systems (privileged containers will be required) however some host distros could possibly be more lenient
 fi
-cage scrcpy &> /tmp/cage.log &  # &> redirects both stderr & stdout
+cage -- scrcpy 2>&1 | tee /tmp/cage.log &  # 2&1> redirects stderr & stdout into just stdout, tee writes to file and stdout
 
 wayland_display=""
 max_wait_seconds=60
