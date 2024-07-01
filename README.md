@@ -1,5 +1,7 @@
 #### NOTE: The Wayland version of this project is abandoned. [I was unable to get cage to properly start the app (scrcpy or weston-terminal, both were lost causes) and it required extremely broad Docker permissions to run, which was a no-go because I may have hundreds of instances running that should not lock up hardware.](https://gist.github.com/regulad/32f22d2abf59fe8ae7a17b004b53e103) I am currently working on recreating giglamesh in another X11-based Docker container, possibly using KasmVNC.
 
+#### ADDENDUM: I ended up doing just that. [You can see a test docker-compose file here.](https://github.com/regulad/test-scrcpy). It uses KasmVNC & scrcpy to provide a simple interface for Android.
+
 # Giglamesh
 
 Giglamesh creates a VNC server from any ADB device. This allows you to connect to the VNC server and interact with the Android device as if you were using it directly. This circumvents the need to install any additional software on the Android device itself.
