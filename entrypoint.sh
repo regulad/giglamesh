@@ -8,7 +8,6 @@ export PKG_CONFIG_PATH="/usr/local/lib/$(arch)-linux-gnu/pkgconfig:${PKG_CONFIG_
 # shellcheck disable=SC2155  # arch will not fail
 export LD_LIBRARY_PATH="/usr/local/lib/$(arch)-linux-gnu/:${LD_LIBRARY_PATH}"
 # on PATH in docker now: scrcpy, adb, cage, wayvnc
-# also from a transient dependency: python3???
 
 # a lot of the code in here will be borrowed from Stringray, the last project I did with remote desktops and servers
 # https://github.com/regulad/stingray/blob/master/stingray.py
@@ -44,4 +43,31 @@ done
 echo "Connected to ADB device."
 
 # running
-python3 ./entrypoint.py
+echo "Starting cage server..."
+
+mkdir -p /tmp/vnc
+# start the cage server
+export XDG_RUNTIME_DIR="/tmp/vnc"
+export SDL_VIDEODRIVER="wayland"  # this is for scrcpy
+#export WLR_LIBINPUT_NO_DEVICES="1"  # this is for cage
+
+elogind &  # start elogind for cage
+cage scrcpy &> /tmp/cage.log &  # &> redirects both stderr & stdout
+
+wayland_display=""
+max_wait_seconds=60
+counter=0
+while [ -z "$wayland_display" ] && [ $counter -lt $max_wait_seconds ]; do
+  # wait for cage to start, get the wayland display
+  wayland_display=$(tail -n 100 /tmp/cage.log | grep -oP 'running on Wayland display \K.*')
+  sleep 1
+  counter=$((counter + 1))
+done
+
+if [ -z "$wayland_display" ]; then
+    echo "Cage never started properly."
+    cat /tmp/cage.log
+    exit 1
+fi
+
+wayvnc --config=/tmp/vnc/config 0.0.0.0

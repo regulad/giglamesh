@@ -42,7 +42,7 @@ ln -s ../../wayland-protocols .
 ln -s ../../drm .
 cd ..
 
-meson setup build/ -Dxwayland=enabled
+meson setup build/ -Dlogind=enabled -Dlogind-provider=elogind -Dxwayland=enabled
 #ninja -C build/ install
 cd ..
 
@@ -58,7 +58,7 @@ ln -s ../../wayland .
 ln -s ../../wayland-protocols .
 cd ..
 
-meson build/
+meson build/ -Dxwayland=enabled
 ninja -C build/ install
 cd ..
 

@@ -36,6 +36,7 @@ RUN echo "deb http://deb.debian.org/debian bookworm-backports main contrib non-f
                       libavutil-dev libturbojpeg0-dev scdoc \
                       \
                       adb android-sdk-platform-tools-common fastboot cmake coreutils gettext-base \
+                      elogind libelogind-dev libelogind0 \
     && apt-get clean
 # TODO: install the dependencies in the same layer as the apt-get and then apt-get remove developmnent dependencies to save layer size
 
