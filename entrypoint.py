@@ -4,6 +4,8 @@
 # i *could* do this in bash but I am far more comfortable doing it with subprocess in python and it will definitely work better
 
 import subprocess
+import sys
+import pty
 import re
 import os
 
@@ -11,10 +13,13 @@ import os
 if __name__ == "__main__":
     print("Starting cage server...")
 
+    master1, slave1 = pty.openpty()
+
     # start the cage server
     cage = subprocess.Popen(
         "cage scrcpy",
         shell=True,
+        stdin=slave1,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         env={
@@ -51,10 +56,15 @@ if __name__ == "__main__":
         print("Cage never started properly.")
         exit(1)
 
+    master2, slave2 = pty.openpty()
+
     # start wayvnc
     wayvnc = subprocess.Popen(
         "wayvnc 0.0.0.0",
         shell=True,
+        stdin=slave2,
+        stdout=sys.stdout,
+        stderr=sys.stderr,
         env={
             "WAYLAND_DISPLAY": wayland_display,
         }
