@@ -22,13 +22,13 @@ services:
     ports:
       - "5900:5900/tcp"
     devices:
-      - /dev/dri
-      - /dev/tty0
+      - /dev/dri  # privileged doesn't pass through the entire device; libdrm needs this and cage needs libdrm through wlroots
+      - /dev/tty0 # same deal; this is required for libseat1 to run
     # the following 4 lines are absolutely necessary to get libseat working
-    tty: true
-    privileged: true
-    read_only: true
-    stdin_open: true
+    tty: true  # libseat1
+    privileged: true  # libseat1
+    read_only: true  # this is for security more than anything, we don't run any code from writeable areas of the container
+    stdin_open: true  # unknown, but was unreliable without this
     volumes:
       - type: tmpfs
         target: /tmp
