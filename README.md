@@ -25,6 +25,10 @@ The following environment variables need to be set in the `.env` file (a `.env.e
 
 Once the Docker container is running, you can access the VNC server at `localhost:5900`. Note that if the ADB connection to the Android device dies for any reason, the VNC server will too. You are responsible for restarting a container running from this image.
 
+## Notes
+
+I am aware of https://hub.docker.com/r/kasmweb/redroid but it does not fit my needs. It uses docker-in-docker, which is simply too indirect for the access I needed to the ADB device in doppelganger. In addition, it also doesn't run in a kiosk mode which is a must when the VNC stream is going to be inserted into another app.
+
 ## License
 
 This project is licensed under the MIT License - see the `LICENSE` file for details.

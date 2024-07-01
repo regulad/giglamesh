@@ -8,7 +8,15 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5900:5900/tcp"  # your VNC port
+    volumes:
+      - type: tmpfs
+        target: /tmp
+      - type: tmpfs
+        target: /run
+      - type: tmpfs
+        target: /var/run
     read_only: true
+    privileged: true
     tty: true
     networks:
       - default

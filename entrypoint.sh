@@ -14,7 +14,7 @@ export LD_LIBRARY_PATH="/usr/local/lib/$(arch)-linux-gnu/:${LD_LIBRARY_PATH}"
 
 echo "Rotating TLS key and certificate for wayvnc..."
 # just rotate the key every time, it's not like it's a big deal
-rm -f /tmp/vnc
+rm -rf /tmp/vnc
 mkdir -p /tmp/vnc
 cd /tmp/vnc
 rm -f tls_key.pem tls_cert.pem
@@ -51,9 +51,7 @@ export XDG_RUNTIME_DIR="/tmp/vnc"
 export SDL_VIDEODRIVER="wayland"  # this is for scrcpy
 #export WLR_LIBINPUT_NO_DEVICES="1"  # this is for cage
 
-#elogind &  # start elogind for cage  # couldn't get elongd on easy since debian is built around systemd.
-#                                     # i am going to try to just run systemd next before i do dependency management
-# also worth trying: direct seatd
+ln -s "$(tty)" /dev/tty0  # the integrated seatd in cage only knows to look here
 cage scrcpy &> /tmp/cage.log &  # &> redirects both stderr & stdout
 
 wayland_display=""
