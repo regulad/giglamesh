@@ -7,23 +7,26 @@ import subprocess
 import sys
 import pty
 import re
+import pathlib
 import os
 
 
 if __name__ == "__main__":
     print("Starting cage server...")
 
+    pathlib.Path("/tmp/vnc").mkdir(parents=True, exist_ok=True)
+
     master1, slave1 = pty.openpty()
 
     # start the cage server
     cage = subprocess.Popen(
-        "cage scrcpy",
+        "cage scrcpy",  # cage needs to have the setuid bit set to run as root, but this is a conflict since it clears the env so we just run the whole thing as root
         shell=True,
         stdin=slave1,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         env={
-            "XDG_RUNTIME_DIR": "/tmp",
+            "XDG_RUNTIME_DIR": "/tmp/vnc",
             "SDL_VIDEODRIVER": "wayland",
             "WLR_LIBINPUT_NO_DEVICES": "1",  # https://github.com/cage-kiosk/cage/wiki/Troubleshooting#cage-does-not-start-without-any-input-devices
         }
@@ -61,7 +64,7 @@ if __name__ == "__main__":
 
     # start wayvnc
     wayvnc = subprocess.Popen(
-        "wayvnc 0.0.0.0",
+        "wayvnc 0.0.0.0 --config=/tmp/vnc/config",
         shell=True,
         stdin=slave2,
         stdout=sys.stdout,

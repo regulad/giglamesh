@@ -55,34 +55,31 @@ WORKDIR /
 
 # set the bit for cage to enable
 # https://github.com/cage-kiosk/cage/wiki/Running-Cage-without-systemd#direct-via-setuid
-RUN chmod +s /usr/local/bin/cage
+# RUN chmod +s /usr/local/bin/cage
+# nvm. we can't set the uid bit because this makes environment variables be cleared at runtime, which is a big no-no
+# since we need to set environment variables at runtime. therefore, the whole thing will need to be run as root
+# security nightmare, but it's the only way to do it
 
-ARG USERNAME=giglamesh
-ARG USER_UID=1008
-ARG USER_GID=$USER_UID
+#ARG USERNAME=giglamesh
+#ARG USER_UID=1008
+#ARG USER_GID=$USER_UID
+#
+#RUN groupadd -g $USER_GID $USERNAME \
+#    && useradd -u $USER_UID -g $USERNAME -m -s /bin/bash $USERNAME
+#
+#RUN chown -R $USERNAME:$USERNAME /home/$USERNAME
+#
+## Switch to non-root user (for security)
+## This makes dockerfile_lint complain, but it's fine
+## dockerfile_lint - ignore
+#USER $USERNAME
+#
+## Set the working directory to the user's home directory
+#WORKDIR /home/$USERNAME
 
-RUN groupadd -g $USER_GID $USERNAME \
-    && useradd -u $USER_UID -g $USERNAME -m -s /bin/bash $USERNAME
-
-RUN chown -R $USERNAME:$USERNAME /home/$USERNAME
-
-# Switch to non-root user (for security)
-# This makes dockerfile_lint complain, but it's fine
-# dockerfile_lint - ignore
-USER $USERNAME
-
-# Set the working directory to the user's home directory
-WORKDIR /home/$USERNAME
-
-RUN mkdir -p /home/$USERNAME/.config/wayvnc
-
-# Copy the current directory contents into the container at /app
-COPY --chown=$USERNAME:$USERNAME entrypoint.sh /home/$USERNAME/entrypoint.sh
-RUN chmod +x /home/$USERNAME/entrypoint.sh
-COPY --chown=$USERNAME:$USERNAME entrypoint.py /home/$USERNAME/entrypoint.py
-RUN chmod +x /home/$USERNAME/entrypoint.py
-COPY --chown=$USERNAME:$USERNAME wayvnc/config_template /home/$USERNAME/.config/wayvnc/config_template
-# TODO: do these copies into a read only area, do the other stuff in temp
+COPY entrypoint.sh /root/entrypoint.sh
+COPY entrypoint.py /root/entrypoint.py
+COPY config_template /root/config_template
 
 # Run the entrypoint script
-ENTRYPOINT ["/home/giglamesh/entrypoint.sh"]
+ENTRYPOINT ["/bin/sh", "/root/entrypoint.sh"]

@@ -1,6 +1,8 @@
 #!/bin/bash
 # i don't think the shebang is respected in the docker container
 
+set -e
+
 # Set the environment variables
 export PATH="/usr/local/bin:${PATH}"
 # shellcheck disable=SC2155  # arch will not fail
@@ -19,18 +21,19 @@ export LD_LIBRARY_PATH="/usr/local/lib/$(arch)-linux-gnu/:${LD_LIBRARY_PATH}"
 
 echo "Rotating TLS key and certificate for wayvnc..."
 # just rotate the key every time, it's not like it's a big deal
-cd ~/.config/wayvnc || exit 1
+rm -f /tmp/vnc
+mkdir -p /tmp/vnc
+cd /tmp/vnc
 rm -f tls_key.pem tls_cert.pem
 openssl req -x509 -newkey ec -pkeyopt ec_paramgen_curve:secp384r1 -sha384 \
 	-days 3650 -nodes -keyout tls_key.pem -out tls_cert.pem \
 	-subj /CN=localhost \
-	-addext subjectAltName=DNS:localhost,DNS:localhost,IP:127.0.0.1 || exit 1
-cd ~ || exit 1
-
+	-addext subjectAltName=DNS:localhost,DNS:localhost,IP:127.0.0.1
 # envsubst
 echo "Injecting environment variables into wayvnc config..."
-rm -f ~/.config/wayvnc/config || exit 1
-envsubst < ~/.config/wayvnc/config_template > ~/.config/wayvnc/config || exit 1
+rm -f config
+envsubst < ~/config_template > config || exit 1
+cd ~
 
 function connect_adb() {
   echo "Attempting ADB connection..."
