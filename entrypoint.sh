@@ -57,7 +57,10 @@ if [ ! -e /dev/tty0 ]; then
   ln -s "$(tty)" /dev/tty0  # integrated seatd will only work with /dev/tty0
   # the ptty will not be enough for seatd to work on most systems (privileged containers will be required) however some host distros could possibly be more lenient
 fi
-cage -- scrcpy 2>&1 | tee /tmp/cage.log &  # 2&1> redirects stderr & stdout into just stdout, tee writes to file and stdout
+rm -f /tmp/cage.log
+# https://gist.github.com/regulad/64cc432a8d201ea6d9136722d9bdc66e
+# https://gist.github.com/regulad/047f1bbe20614681a263caaa16dee661
+cage -- scrcpy 2>&1 | tee /tmp/cage.log &  # 2&1> redirects stderr & stdout into just stdout, tee writes to file and stdout instead of what redirecting (> or &>) does which is just go to that file
 
 wayland_display=""
 max_wait_seconds=60
@@ -71,8 +74,14 @@ done
 
 if [ -z "$wayland_display" ]; then
     echo "Cage never started properly."
-    cat /tmp/cage.log
     exit 1
 fi
 
+# https://gist.github.com/regulad/5cc442cb0afd00c31a0ce7296ca2a4ff
 wayvnc --config=/tmp/vnc/config 0.0.0.0 5900
+
+# TODO: FPS limit passed to scrcpy & wayvnc
+# TODO: resolution limit that sets size of canvas for cage & scrcpy
+# TODO: add an audio stream https://github.com/any1/wayvnc/issues/209 https://github.com/Genymobile/scrcpy/blob/master/doc/audio.md
+# TODO: copy-paste between host and guest
+# TODO: simulating gestures https://github.com/Genymobile/scrcpy/blob/master/doc/control.md#pinch-to-zoom-rotate-and-tilt-simulation
