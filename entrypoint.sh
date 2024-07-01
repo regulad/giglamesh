@@ -34,7 +34,7 @@ function connect_adb() {
   adb connect "$DEVICE_IP":"$DEVICE_ADB_PORT" | grep "connected"  # handles "connected to" and "already connected to"
 }
 
-export ANDROID_USER_HOME="/tmp/.android"
+export ANDROID_SDK_HOME="/tmp/.android"
 echo "Connecting to ADB device..."
 while ! connect_adb;
 do
