@@ -25,6 +25,7 @@ if __name__ == "__main__":
         env={
             "XDG_RUNTIME_DIR": "/tmp",
             "SDL_VIDEODRIVER": "wayland",
+            "WLR_LIBINPUT_NO_DEVICES": "1",  # https://github.com/cage-kiosk/cage/wiki/Troubleshooting#cage-does-not-start-without-any-input-devices
         }
         | os.environ,
     )

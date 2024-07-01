@@ -53,6 +53,10 @@ RUN /deps/install-dependencies.sh
 
 WORKDIR /
 
+# set the bit for cage to enable
+# https://github.com/cage-kiosk/cage/wiki/Running-Cage-without-systemd#direct-via-setuid
+RUN chmod +s /usr/local/bin/cage
+
 ARG USERNAME=giglamesh
 ARG USER_UID=1008
 ARG USER_GID=$USER_UID
