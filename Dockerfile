@@ -79,7 +79,7 @@ WORKDIR /
 
 COPY entrypoint.sh /root/entrypoint.sh
 COPY entrypoint.py /root/entrypoint.py
-COPY config_template /root/config_template
+COPY wayvnc_config_template /root/config_template
 
 # Run the entrypoint script
-ENTRYPOINT ["/bin/sh", "/root/entrypoint.sh"]
+ENTRYPOINT ["/bin/bash", "/root/entrypoint.sh"]
